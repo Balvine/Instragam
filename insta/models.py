@@ -61,7 +61,7 @@ class Image(models.Model):
     caption = models.TextField(blank=True)
     posted_on = models.DateTimeField(auto_now_add=True)
     profile = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
-    details = models.ForeignKey(Profile, null=True)
+    details = models.ForeignKey(Profile, null=True,on_delete = models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -113,7 +113,7 @@ class Comments(models.Model):
     Class that contains comments details
     """
     image = models.ForeignKey(Image, blank=True, on_delete=models.CASCADE, related_name='comment')
-    commenter = models.ForeignKey(User, blank=True)
+    commenter = models.ForeignKey(User, blank=True,on_delete = models.CASCADE)
     comment_itself = models.TextField()
 
     def delete_comment(self):
@@ -131,14 +131,14 @@ class Comments(models.Model):
         return self.comment_itself
 
 
-class Likes(models.Model):
-    who_liked = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
-    liked_image = models.ForeignKey(
-    Image, on_delete=models.CASCADE, related_name='likes')
+# class Likes(models.Model):
+#     who_liked = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
+#     liked_image = models.ForeignKey(
+#     Image, on_delete=models.CASCADE, related_name='likes')
 
-    def save_like(self):
-        self.save()
+#     def save_like(self):
+#         self.save()
 
-    def __str__(self):
-        return self.who_liked
+#     def __str__(self):
+#         return self.who_liked
     
