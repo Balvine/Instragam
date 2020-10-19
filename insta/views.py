@@ -1,11 +1,18 @@
-from django.shortcuts import render
-# from django import HttpReponse
-from .models import Image,Profile
-from django.contrib.auth import login
-# Create your views here.
-
-
-
+from django.shortcuts import render,redirect
+from django.http import HttpResponse
+from .models import Image,Profile,Likes,Comments
+from django.contrib.auth import login, authenticate
+from .forms import SignupForm,ImageForm,CommentForm,ProfileForm
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from .tokens import account_activation_token
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMessage
+from django.contrib.auth.models import User
+from friendship.models import Friend, Follow, Block
 
 
 @login_required(login_url='/accounts/login/')
@@ -17,6 +24,7 @@ def index(request):
     people = Follow.objects.following(request.user)
     profile = User.objects.all()
     return render(request,'index.html',locals())
+
 
 
 
@@ -84,3 +92,53 @@ def search_user(request):
     else:
         message = "You haven't searched for any term"
         return render(request, 'search.html', {"message":message})
+
+
+def comment(request,image_id):
+    current_user=request.user
+    image = Image.objects.get(id=image_id)
+    profile_user = User.objects.get(username=current_user)
+    the_comments = Comments.objects.all()
+    print(the_comments)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment_itself = form.save(commit=False)
+            comment_itself.image = image
+            comment_itself.commenter = request.user
+
+            comment_itself.save()
+
+            print(the_comments)
+
+
+        return redirect(index)
+
+    else:
+        form = CommentForm()
+
+    return render(request, 'comment.html', locals())
+
+@login_required(login_url='/accounts/login/')
+def follow(request,user_id):
+    users = User.objects.get(id = user_id)
+    follow = Follow.objects.add_follower(request.user,users)
+
+    return redirect('indexpage')
+
+@login_required(login_url='/accounts/login/')
+def unfollow(request,user_id):
+    users = User.objects.get(id = user_id)
+
+    follow = Follow.objects.remove_follower(request.user,users)
+
+    return redirect('indexpage')
+
+
+def like(request, image_id):
+    current_user = request.user
+    liked_image=Image.objects.get(id=image_id)
+    new_like,created= Likes.objects.get_or_create(who_liked=current_user, liked_aimage=liked_image)
+    new_like.save()
+
+    return redirect('indexpage')
