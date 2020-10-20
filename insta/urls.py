@@ -15,6 +15,6 @@ urlpatterns = [
     url(r'^follow/(\d+)$', views.follow, name='follow'),
     url(r'^unfollow/(\d+)$', views.unfollow, name='unfollow'),
 ]
-# if settings.DEBUG:
-#     urlpatterns += static(settings.MEDIA_URL,
-#                           document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

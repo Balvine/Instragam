@@ -6,6 +6,7 @@ from django.db.models.signals import post_save
 from friendship.models import Friend, Follow, Block
 
 
+# Create your models here.
 
 class Profile(models.Model):
     """
@@ -14,8 +15,7 @@ class Profile(models.Model):
     pic = models.ImageField(upload_to='images/', blank=True)
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, related_name="profile")
     bio = models.TextField()
-    
-    
+
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
@@ -38,8 +38,7 @@ class Profile(models.Model):
 
     def delete_profile(self):
         self.delete()
-        
-    
+
     @classmethod
     def search_profile(cls, name):
         profile = Profile.objects.filter(user__username__icontains=name)
@@ -55,13 +54,14 @@ class Profile(models.Model):
         profile_info = cls.objects.filter(user__contains=user)
 
 
+
 class Image(models.Model):
     name = models.CharField(max_length=50)
     image = models.ImageField(upload_to='images/', blank=True)
     caption = models.TextField(blank=True)
     posted_on = models.DateTimeField(auto_now_add=True)
     profile = models.ForeignKey(User, blank=True, on_delete=models.CASCADE)
-    details = models.ForeignKey(Profile, null=True,on_delete = models.CASCADE)
+    details = models.ForeignKey(Profile, null=True)
 
     def __str__(self):
         return self.name
@@ -113,7 +113,7 @@ class Comments(models.Model):
     Class that contains comments details
     """
     image = models.ForeignKey(Image, blank=True, on_delete=models.CASCADE, related_name='comment')
-    commenter = models.ForeignKey(User, blank=True,on_delete = models.CASCADE)
+    commenter = models.ForeignKey(User, blank=True)
     comment_itself = models.TextField()
 
     def delete_comment(self):
@@ -141,4 +141,3 @@ class Likes(models.Model):
 
     def __str__(self):
         return self.who_liked
-    
