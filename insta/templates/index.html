@@ -1,6 +1,6 @@
 {%extends 'base.html'%}
 {% load bootstrap3 %}
-{% load static %}
+{% load staticfiles %}
 
 {% block styles %}
 {{block.super}}
@@ -109,3 +109,49 @@
     </div>
 
 </body>
+<style>
+    body {
+        background: rgb(250, 249, 249);
+        font-family: 'Lateef', cursive;
+        font-size: 20px !important;
+    }
+    .card {
+        position: relative;
+        left: 140px;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0, 0, 0, .125);
+        border-radius: .25rem;
+    }
+    .fa-bookmark:before {
+        content: "\f02e";
+        padding-left: 565px;
+    }
+    .imagee {
+        height: 630px !important;
+        width: 100% !important;
+        position: center;
+        size: cover;
+    }
+    .username {
+        color: black;
+        font-size: px;
+        font-weight: bold;
+        font-family: 'Lateef', cursive;
+    }
+    h5 {
+        margin-top: -30px;
+    }
+    .list {
+        overflow: scroll;
+        width: 200px;
+        height: 255px;
+        background: rgb(241, 241, 241);
+    }
+</style>
+{% endblock %}

@@ -1,5 +1,6 @@
+{% load staticfiles %}
+
 {% load bootstrap3 %}
-{% load static %}
 
 <!DOCTYPE html>
 <html>
@@ -16,7 +17,7 @@
 
   {% block styles %}
     {% bootstrap_css %}
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% staticfiles 'css/index.css' %}">
     <link rel="shortcut icon" href="/static/photos/insta.png" type="image/x-icon">
   {% endblock %}
 
