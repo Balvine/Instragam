@@ -37,7 +37,9 @@ def add_new_image(request):
         if form.is_valid():
             add=form.save(commit=False)
             add.profile = current_user
+           
             add.save()
+             (print(dir(variable)) 
             return redirect('indexpage')
     else:
         form = ImageForm()

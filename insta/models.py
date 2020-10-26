@@ -13,7 +13,7 @@ class Profile(models.Model):
     Class that contains profile details
     """
     pic = models.ImageField(upload_to='images/', blank=True)
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, related_name="profile")
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, related_name="profile",)
     bio = models.TextField()
 
     @receiver(post_save, sender=User)
@@ -23,7 +23,7 @@ class Profile(models.Model):
 
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, created, **kwargs):
-        instance.profile.save()
+       instance.save_profile()
 
     post_save.connect(save_user_profile, sender=User)
 
