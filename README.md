@@ -5,10 +5,6 @@
 Is application that enables users to post their post and can be followed by other users.Their post can be shared ,commented and liked others
 ##  Live Link  
 
-## Screenshots 
-###### Home page
-
-
   
 ## Setup and Installation  
 To get the project .......  
