@@ -16,17 +16,6 @@ class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, related_name="profile",)
     bio = models.TextField()
 
-    @receiver(post_save, sender=User)
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
-
-    @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, created, **kwargs):
-       instance.save_profile()
-
-    post_save.connect(save_user_profile, sender=User)
-
     def __str__(self):
         return self.bio
 
@@ -52,7 +41,17 @@ class Profile(models.Model):
     @classmethod
     def get_profile_by_username(cls, user):
         profile_info = cls.objects.filter(user__contains=user)
+        
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
 
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, created, **kwargs):
+    instance.profile.save()
+
+post_save.connect(save_user_profile, sender=User)
 
 
 class Image(models.Model):

@@ -36,10 +36,8 @@ def add_new_image(request):
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
             add=form.save(commit=False)
-            add.profile = current_user
-           
+            add.profile = current_user 
             add.save()
-             (print(dir(variable)) 
             return redirect('indexpage')
     else:
         form = ImageForm()
