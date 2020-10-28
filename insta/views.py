@@ -15,7 +15,7 @@ from django.contrib.auth.models import User
 from friendship.models import Friend, Follow, Block
 
 
-@login_required(login_url='/accounts/login/')
+# @login_required(login_url='/accounts/login/')
 def index(request):
     # profile = UserProfile.objects.create(user=request.user)
     current_user = request.user
